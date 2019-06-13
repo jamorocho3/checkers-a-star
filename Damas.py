@@ -156,7 +156,7 @@ class Damas(Problema):
     # n7  p13  n8   p15
     # Destructuring
     p0,n1,p2,n2,n3,p5,n4,p7,p8,n5,p10,n6,n7,p13,n8,p15 = estado
-    
+
     # Movimiento Negras
     if accion == "right_up":
       if posicion_pieza == 5:
@@ -168,7 +168,7 @@ class Damas(Problema):
       if posicion_pieza == 13:
         return (p0,n1,p2,n2,n3,p5,n4,p7,p8,n5,p13,n6,n7,0,n8,p15)
 
-    # Movimientos Dobles 
+    # Movimientos Dobles
     if accion == "double_right_up":
       if posicion_pieza == 8:
         return (p0,n1,p8,n2,n3,0,n4,p7,0,n5,p10,n6,n7,p13,n8,p15)
@@ -207,7 +207,7 @@ class Damas(Problema):
       if posicion_pieza == 10:
         return (p0,n1,p2,n2,n3,p5,n4,p7,p8,n5,0,n6,n7,p13,n8,p10)
 
-    # Movimientos Dobles 
+    # Movimientos Dobles
     if accion == "double_right_down":
       if posicion_pieza == 0:
         return (0,n1,p2,n2,n3,0,n4,p7,p8,n5,p0,n6,n7,p13,n8,p15)
@@ -224,7 +224,7 @@ class Damas(Problema):
       if posicion_pieza == 10:
         return (p0,n1,p2,n2,n3,p5,n4,p7,p8,n5,0,n6,n7,p10,n8,p15)
 
-    # Movimientos Dobles 
+    # Movimientos Dobles
     if accion == "double_left_down":
       if posicion_pieza == 2:
         return (p0,n1,0,n2,n3,0,n4,p7,p2,n5,p10,n6,n7,p13,n8,p15)
@@ -233,79 +233,106 @@ class Damas(Problema):
 
 # Resultados
 game = Damas(('R', None, 'R', None, None, 0, None, 0, 0, None, 0, None, None, 'B', None, 'B')) # tablero inicial
-# game = Damas(('R', None, 0, None, None, 0, None, None, 0, None, 'B', None, None, 'R', None, 'B')) # tablero inicial
 
 estado_inicial = game.estado_inicial
 estado_final = game.estado_final
 validation = False
 p = 'B'
 coord = (0,0)
+cchevishev= list()
 
-
-# obtener posiciones de las fichas negras y rojas
-# mover ficha tomando en cuenta la distancia de la ficha 
-# negra respecto a la posición de reina
-# y aprovechando la oportunidad de comer una ficha enemiga
-# calcular movimentos de las fichas Negras
-
-while validation == False:
-  # posiciones de las fichas dentro de la tupla
-  black_piece = [i for i, x in enumerate(estado_inicial) if x == p]
-  red_piece = [i for i, x in enumerate(estado_inicial) if x == 'R']
-  
-  #   0 1 2 3
-  # 0 .   .  
-  # 1   .   .
-  # 2 .   .  
-  # 3   .   .
-  # for pos in red_piece:
-  #   if pos == 0:
-  #     distanciaChevishev((0,0),(1,3))
-  #   if pos == 2:
-  #     distanciaChevishev((2,0),(3,3))
-  #   if pos == 5:
-  #     distanciaChevishev((1,1),(1,3))
-  #   if pos == 7:
-  #     distanciaChevishev((3,1),(3,3))
-  #   if pos == 8:
-  #     distanciaChevishev((0,2),(1,3))
-  #   if pos == 10:
-  #     distanciaChevishev((2,2),(3,3))
-  #   if pos == 13:
-  #     distanciaChevishev((1,3),(1,3))
-  #   if pos == 15:
-  #     distanciaChevishev((3,3),(3,3))
-
-  shuffle(black_piece)
-  posicion_pieza = black_piece[0]
-  # con acciones buscar pieza puede moverse
-  accion = game.acciones(estado_inicial, posicion_pieza)
-  aplica = game.aplica(estado_inicial, posicion_pieza, accion[0])
-
-
-  # validation = True
-  time.sleep(1)
-
-  p0,n1,p2,n2,n3,p5,n4,p7,p8,n5,p10,n6,n7,p13,n8,p15 = estado_inicial
-
-  tablero = [
-    [p0,n1,p2,n2],
-    [n3,p5,n4,p7],
-    [p8,n5,p10,n6],
-    [n7,p13,n8,p15]
-  ]
-  print(tabulate(tablero, tablefmt='grid'))
-  print("Turno:", p," Accion: ", accion)
-  
-  estado_inicial = aplica
-  if p == 'B': p = 'R'
-  elif p == 'R': p = 'B'
+cont = 0
 
 def distanciaChevishev(punto_1, punto_2):
   x1,y1 = punto_1
   x2,y2 = punto_2
   return max(abs(x2 - x1), abs(y2 - y1))
 
+while validation == False:
+  # posiciones de las fichas dentro de la tupla
+  piece = [i for i, x in enumerate(estado_inicial) if x == p]
+
+  #    0  1  2  3
+  # 0  00    02
+  # 1     11    13
+  # 2  20    22
+  # 3     31    33
+  # el for recorre las posiciones disponibles
+  for pos in piece:
+    if p == 'B':
+      if pos == 0:
+        dis = distanciaChevishev((0,0),(0,0))
+      if pos == 2:
+        dis = distanciaChevishev((0,2),(0,2))
+      if pos == 5:
+        dis =  distanciaChevishev((1,1),(0,2))
+      if pos == 7:
+        dis = distanciaChevishev((1,3),(0,2))
+      if pos == 8:
+        dis = distanciaChevishev((2,0),(0,2))
+      if pos == 10:
+        dis = distanciaChevishev((2,2),(0,2))
+      if pos == 13:
+        dis = distanciaChevishev((3,1),(0,2))
+      if pos == 15:
+        dis = distanciaChevishev((3,3),(0,2))
+    elif p == 'R':
+      if pos == 0:
+        dis = distanciaChevishev((0,0),(3,1))
+      if pos == 2:
+        dis = distanciaChevishev((0,2),(3,1))
+      if pos == 5:
+        dis = distanciaChevishev((1,1),(3,1))
+      if pos == 7:
+        dis = distanciaChevishev((1,3),(3,1))
+      if pos == 8:
+        dis = distanciaChevishev((2,0),(3,1))
+      if pos == 10:
+        dis = distanciaChevishev((2,2),(3,1))
+      if pos == 13:
+        dis = distanciaChevishev((3,1),(3,1))
+      if pos == 15:
+        dis = distanciaChevishev((3,3),(3,3))
+    cchevishev.append(dis)
+
+  time.sleep(1)
 
 
+  print("max de chevishev ", p, max(cchevishev))
 
+  if max(cchevishev) != 0:
+    shuffle(piece)
+    posicion_pieza = piece[0]
+    # con acciones buscar pieza puede moverse
+    # print(estado_inicial,posicion_pieza)
+    accion = game.acciones(estado_inicial, posicion_pieza)
+    # si la pieza sin movimientos
+    if accion == []:
+      posicion_pieza = piece[1]
+      accion = game.acciones(estado_inicial, posicion_pieza)
+    aplica = game.aplica(estado_inicial, posicion_pieza, accion[0])
+
+
+    p0,n1,p2,n2,n3,p5,n4,p7,p8,n5,p10,n6,n7,p13,n8,p15 = estado_inicial
+
+    tablero = [
+      [p0,n1,p2,n2],
+      [n3,p5,n4,p7],
+      [p8,n5,p10,n6],
+      [n7,p13,n8,p15]
+    ]
+    print(tabulate(tablero, tablefmt='grid'))
+    print("Turno:", p, posicion_pieza," Accion: ", accion)
+
+  # B se convirtió en reina
+  elif max(cchevishev) == 0:
+    print("B es reina")
+    validation = True
+
+
+  estado_inicial = aplica
+  cchevishev = []
+  if p == 'B': p = 'R'
+  elif p == 'R': p = 'B'
+  cont = cont + 1
+  print("Movimiento ==> ", cont)
