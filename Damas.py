@@ -4,6 +4,8 @@
 
 from Problema import *
 from tabulate import tabulate
+from random import shuffle
+import time
 
 
 # Heredamos de la clase Problema
@@ -71,7 +73,6 @@ class Damas(Problema):
             access.append("left_up")
 
     if pieza == "R":
-      
       # R -> izquierda
       if posicion_pieza not in (7,13,15):
         # 0 -> 5
@@ -154,7 +155,7 @@ class Damas(Problema):
       if posicion_pieza == 13:
         return (p0,n1,p2,n2,n3,p5,n4,p7,p13,n5,p10,n6,n7,0,n8,p15)
       if posicion_pieza == 15:
-        return (p0,n1,p2,n2,n3,p5,n4,p7,p8,n5,p10,n6,n7,p15,n8,0)
+        return (p0,n1,p2,n2,n3,p5,n4,p7,p8,n5,p15,n6,n7,p13,n8,0)
     # Movimiento Rojas
     if accion == "right_down":
       if posicion_pieza == 0:
@@ -180,35 +181,83 @@ class Damas(Problema):
 
 
 # Resultados
-# game = Damas(("R",0,"R",0,0,0,0,0,0,0,0,0,0,"B",0,"B")) # tablero inicial
-game = Damas(('R', 0, 0, 0, 0, 0, 0, 'R', 0, 0, 'B', 0, 0, 0, 0, 'B')) # tablero inicial
+game = Damas(('R', None, 'R', None, None, 0, None, 0, 0, None, 0, None, None, 'B', None, 'B')) # tablero inicial
+# game = Damas(('R', None, 0, None, None, 0, None, None, 0, None, 'B', None, None, 'R', None, 'B')) # tablero inicial
 
 estado_inicial = game.estado_inicial
 estado_final = game.estado_final
-
-# posiciones de las fichas dentro de la tupla
-black_piece = [i for i, x in enumerate(estado_inicial) if x == 'B']
-red_piece = [i for i, x in enumerate(estado_inicial) if x == 'R']
-
-# con acciones buscar pieza puede moverse
-accion = game.acciones(estado_inicial, 10)
-black = game.aplica(estado_inicial, 13, "right_up")
-red = game.aplica(estado_inicial, 2, "right_down")
-tablero = estado_inicial
+validation = False
+p = 'B'
+coord = (0,0)
 
 
-print("# estado inicial: ",estado_inicial)
-print("# estado final: ",estado_final)
-print("accion: ",accion)
-# print("aplica: ",tablero)
+# obtener posiciones de las fichas negras y rojas
+# mover ficha tomando en cuenta la distancia de la ficha 
+# negra respecto a la posición de reina
+# y aprovechando la oportunidad de comer una ficha enemiga
+# calcular movimentos de las fichas Negras
+
+while validation == False:
+  # posiciones de las fichas dentro de la tupla
+  black_piece = [i for i, x in enumerate(estado_inicial) if x == p]
+  red_piece = [i for i, x in enumerate(estado_inicial) if x == 'R']
+  
+  #   0 1 2 3
+  # 0 .   .  
+  # 1   .   .
+  # 2 .   .  
+  # 3   .   .
+  # for pos in red_piece:
+  #   if pos == 0:
+  #     distanciaChevishev((0,0),(1,3))
+  #   if pos == 2:
+  #     distanciaChevishev((2,0),(3,3))
+  #   if pos == 5:
+  #     distanciaChevishev((1,1),(1,3))
+  #   if pos == 7:
+  #     distanciaChevishev((3,1),(3,3))
+  #   if pos == 8:
+  #     distanciaChevishev((0,2),(1,3))
+  #   if pos == 10:
+  #     distanciaChevishev((2,2),(3,3))
+  #   if pos == 13:
+  #     distanciaChevishev((1,3),(1,3))
+  #   if pos == 15:
+  #     distanciaChevishev((3,3),(3,3))
+
+  shuffle(black_piece)
+  posicion_pieza = black_piece[0]
+  # con acciones buscar pieza puede moverse
+  accion = game.acciones(estado_inicial, posicion_pieza)
+  aplica = game.aplica(estado_inicial, posicion_pieza, accion[0])
 
 
-p0,n1,p2,n2,n3,p5,n4,p7,p8,n5,p10,n6,n7,p13,n8,p15 = tablero
+  # validation = True
+  time.sleep(2)
+  # print("# estado inicial: ",estado_inicial)
+  # print("# estado final: ",estado_final)
+  print("Turno:", p," Accion: ", accion)
 
-tablero = [
-  [p0,n1,p2,n2],
-  [n3,p5,n4,p7],
-  [p8,n5,p10,n6],
-  [n7,p13,n8,p15]
-]
-print(tabulate(tablero, headers='firstrow', tablefmt='grid'))
+  tablero = aplica
+  estado_inicial = aplica
+  if p == 'B': p = 'R'
+  elif p == 'R': p = 'B'
+
+  p0,n1,p2,n2,n3,p5,n4,p7,p8,n5,p10,n6,n7,p13,n8,p15 = tablero
+
+  tablero = [
+    [p0,n1,p2,n2],
+    [n3,p5,n4,p7],
+    [p8,n5,p10,n6],
+    [n7,p13,n8,p15]
+  ]
+  print(tabulate(tablero, tablefmt='grid'))
+
+def distanciaChevishev(punto_1, punto_2):
+  x1,y1 = punto_1
+  x2,y2 = punto_2
+  return max(abs(x2 - x1), abs(y2 - y1))
+
+
+
+
