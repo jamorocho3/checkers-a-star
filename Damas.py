@@ -33,7 +33,9 @@ class Damas(Problema):
           # posicion libre
           if estado[5] == 0:
             access.append("right_up")
-          access.append("double_right_up")
+          elif estado[5] == "R" :
+            if estado[2] == 0:
+              access.append("double_right_up")
         # 10 -> 7
         if posicion_pieza == 10:
           # posicion libre
@@ -44,9 +46,10 @@ class Damas(Problema):
           # posicion libre
           if estado[10] == 0:
             access.append("right_up")
-          access.append("double_right_up")
-          pass
-      # B -> izquierda
+          elif estado[10] == "R":
+            if estado[7] == 0:
+              access.append("double_right_up")
+          # B -> izquierda
       if posicion_pieza not in (0,2,8):
         # 5 -> 0
         if posicion_pieza == 5:
@@ -63,7 +66,9 @@ class Damas(Problema):
           # posicion libre
           if estado[5] == 0:
             access.append("left_up")
-          access.append("double_left_up")
+          elif estado[5] == "R":
+            if estado[0] == 0:
+              access.append("double_left_up")
         # 13 -> 8
         if posicion_pieza == 13:
           # posicion libre
@@ -74,7 +79,9 @@ class Damas(Problema):
           # posicion libre
           if estado[10] == 0:
             access.append("left_up")
-          access.append("double_left_up")
+          elif estado[10] == "R":
+            if estado[5]  == 0:
+              access.append("double_left_up")
 
     if pieza == "R":
       # R -> izquierda
@@ -84,7 +91,9 @@ class Damas(Problema):
           # posicion libre
           if estado[5] == 0:
             access.append("right_down")
-          access.append("double_right_down")
+          elif estado[5] == "B":
+            if estado[10] == 0:
+              access.append("double_right_down")
         # 2 -> 7
         if posicion_pieza == 2:
           # posicion libre
@@ -95,7 +104,9 @@ class Damas(Problema):
           # posicion libre
           if estado[10] == 0:
             access.append("right_down")
-          access.append("double_right_down")
+          elif estado[10] == "B":
+            if estado[15] == 0:
+              access.append("double_right_down")
         # 8 -> 13
         if posicion_pieza == 8:
           # posicion libre
@@ -113,7 +124,9 @@ class Damas(Problema):
           # posicion libre
           if estado[5] == 0:
             access.append("left_down")
-          access.append("double_left_down")
+          elif estado[5] == "B":
+            if estado[8] == 0 :
+              access.append("double_left_down")
         # 5 -> 8
         if posicion_pieza == 5:
           # posicion libre
@@ -121,11 +134,12 @@ class Damas(Problema):
             access.append("left_down")
         # 7 -> 10
         if posicion_pieza == 7:
-          print("aqui")
           # posicion libre
           if estado[10] == 0:
             access.append("left_down")
-          access.append("double_left_down")
+          elif estado[10] == "B":
+            if estado[13] == 0:
+              access.append("double_left_down")
         # 10 -> 13
         if posicion_pieza == 10:
           # posicion libre
@@ -270,7 +284,7 @@ while validation == False:
 
 
   # validation = True
-  time.sleep(4)
+  time.sleep(1)
 
   p0,n1,p2,n2,n3,p5,n4,p7,p8,n5,p10,n6,n7,p13,n8,p15 = estado_inicial
 
