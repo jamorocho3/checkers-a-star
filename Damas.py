@@ -31,6 +31,7 @@ class Damas(Problema):
           # posicion libre
           if estado[5] == 0:
             access.append("right_up")
+          access.append("double_right_up")
         # 10 -> 7
         if posicion_pieza == 10:
           # posicion libre
@@ -41,6 +42,7 @@ class Damas(Problema):
           # posicion libre
           if estado[10] == 0:
             access.append("right_up")
+          access.append("double_right_up")
           pass
       # B -> izquierda
       if posicion_pieza not in (0,2,8):
@@ -59,6 +61,7 @@ class Damas(Problema):
           # posicion libre
           if estado[5] == 0:
             access.append("left_up")
+          access.append("double_left_up")
         # 13 -> 8
         if posicion_pieza == 13:
           # posicion libre
@@ -69,6 +72,7 @@ class Damas(Problema):
           # posicion libre
           if estado[10] == 0:
             access.append("left_up")
+          access.append("double_left_up")
 
     if pieza == "R":
       
@@ -79,6 +83,7 @@ class Damas(Problema):
           # posicion libre
           if estado[5] == 0:
             access.append("right_down")
+          access.append("double_right_down")
         # 2 -> 7
         if posicion_pieza == 2:
           # posicion libre
@@ -89,6 +94,7 @@ class Damas(Problema):
           # posicion libre
           if estado[10] == 0:
             access.append("right_down")
+          access.append("double_right_down")
         # 8 -> 13
         if posicion_pieza == 8:
           # posicion libre
@@ -106,6 +112,7 @@ class Damas(Problema):
           # posicion libre
           if estado[5] == 0:
             access.append("left_down")
+          access.append("double_left_down")
         # 5 -> 8
         if posicion_pieza == 5:
           # posicion libre
@@ -117,6 +124,7 @@ class Damas(Problema):
           # posicion libre
           if estado[10] == 0:
             access.append("left_down")
+          access.append("double_left_down")
         # 10 -> 13
         if posicion_pieza == 10:
           # posicion libre
@@ -144,6 +152,14 @@ class Damas(Problema):
         return (p0,n1,p2,n2,n3,p5,n4,p10,p8,n5,0,n6,n7,p13,n8,p15)
       if posicion_pieza == 13:
         return (p0,n1,p2,n2,n3,p5,n4,p7,p8,n5,p13,n6,n7,0,n8,p15)
+
+    # Movimientos Dobles 
+    if accion == "double_right_up":
+      if posicion_pieza == 8:
+        return (p0,n1,p8,n2,n3,0,n4,p7,0,n5,p10,n6,n7,p13,n8,p15)
+      if posicion_pieza == 13:
+        return (p0,n1,p2,n2,n3,p5,n4,p13,p8,n5,0,n6,n7,0,n8,p15)
+
     if accion == "left_up":
       if posicion_pieza == 5:
         return (p5,n1,p2,n2,n3,0,n4,p7,p8,n5,p10,n6,n7,p13,n8,p15)
@@ -155,6 +171,14 @@ class Damas(Problema):
         return (p0,n1,p2,n2,n3,p5,n4,p7,p13,n5,p10,n6,n7,0,n8,p15)
       if posicion_pieza == 15:
         return (p0,n1,p2,n2,n3,p5,n4,p7,p8,n5,p10,n6,n7,p15,n8,0)
+
+    # Movimientos Dobles 
+    if accion == "double_left_up":
+      if posicion_pieza == 10:
+        return (p10,n1,p2,n2,n3,0,n4,p7,p8,n5,0,n6,n7,p13,n8,p15)
+      if posicion_pieza == 15:
+        return (p0,n1,p2,n2,n3,p15,n4,p7,p8,n5,0,n6,n7,p13,n8,0)
+
     # Movimiento Rojas
     if accion == "right_down":
       if posicion_pieza == 0:
@@ -167,6 +191,14 @@ class Damas(Problema):
         return (p0,n1,p2,n2,n3,p5,n4,p7,0,n5,p10,n6,n7,p8,n8,p15)
       if posicion_pieza == 10:
         return (p0,n1,p2,n2,n3,p5,n4,p7,p8,n5,0,n6,n7,p13,n8,p10)
+
+    # Movimientos Dobles 
+    if accion == "double_right_down":
+      if posicion_pieza == 0:
+        return (0,n1,p2,n2,n3,0,n4,p7,p8,n5,p0,n6,n7,p13,n8,p15)
+      if posicion_pieza == 5:
+        return (p0,n1,p2,n2,n3,0,n4,p7,p8,n5,0,n6,n7,p13,n8,p5)
+
     if accion == "left_down":
       if posicion_pieza == 2:
         return (p0,n1,0,n2,n3,p2,n4,p7,p8,n5,p10,n6,n7,p13,n8,p15)
@@ -177,11 +209,23 @@ class Damas(Problema):
       if posicion_pieza == 10:
         return (p0,n1,p2,n2,n3,p5,n4,p7,p8,n5,0,n6,n7,p10,n8,p15)
 
-
+    # Movimientos Dobles 
+    if accion == "double_left_down":
+      if posicion_pieza == 2:
+        return (p0,n1,0,n2,n3,0,n4,p7,p2,n5,p10,n6,n7,p13,n8,p15)
+      if posicion_pieza == 7:
+        return (p0,n1,p2,n2,n3,p5,n4,0,p8,n5,0,n6,n7,p7,n8,p15)
 
 # Resultados
+
+    # p0  n1   p2   n2
+    # n3  p5   n4   p7
+    # p8  n5   p10  n6
+    # n7  p13  n8   p15
+
+
 # game = Damas(("R",0,"R",0,0,0,0,0,0,0,0,0,0,"B",0,"B")) # tablero inicial
-game = Damas(('R', 0, 0, 0, 0, 0, 0, 'R', 0, 0, 'B', 0, 0, 0, 0, 'B')) # tablero inicial
+game = Damas((0, 0, 0, 0, 0, 0, 0, 'R', 0, 0, 'B', 0, 0, 0, 0, 0)) # tablero inicial
 
 estado_inicial = game.estado_inicial
 estado_final = game.estado_final
@@ -191,10 +235,10 @@ black_piece = [i for i, x in enumerate(estado_inicial) if x == 'B']
 red_piece = [i for i, x in enumerate(estado_inicial) if x == 'R']
 
 # con acciones buscar pieza puede moverse
-accion = game.acciones(estado_inicial, 10)
-black = game.aplica(estado_inicial, 13, "right_up")
-red = game.aplica(estado_inicial, 2, "right_down")
-tablero = estado_inicial
+accion = game.acciones(estado_inicial, 7)
+black = game.aplica(estado_inicial, 10, "double_left_up")
+red = game.aplica(estado_inicial, 7, "double_left_down")
+tablero = red
 
 
 print("# estado inicial: ",estado_inicial)
